@@ -1,0 +1,18 @@
+targetType = edir
+idvHost = 172.17.2.81
+idvPort = 636
+idvDN = cn=admin,ou=sa,o=system
+idvPwd = dittibop
+idvSearchBase = o=data
+driverDN = cn=User Application Driver,cn=driverset1,o=system
+idvMatchAttr = workforceID
+
+targetHost = 172.17.2.91
+targetPort = 636
+targetDN = cn=admin,ou=sa,o=system
+targetPwd = M1croFocu$
+
+targetAssocValueAttr = GUID
+targetMatchAttr = workforceID
+targetSearchBase = ou=users,o=data
+targetSearchFilter = objectClass=person

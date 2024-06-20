@@ -1,0 +1,18 @@
+targetType = AD
+idvHost = 172.17.2.81
+idvPort = 636
+idvDN = cn=admin,ou=sa,o=system
+idvPwd = dittibop
+idvSearchBase = o=data
+driverDN = cn=User Application Driver,cn=driverset1,o=system
+idvMatchAttr = workforceID
+
+targetHost = ig4dc.iglab.com
+targetPort = 636
+targetDN = CN=Administrator,CN=Users,DC=iglab,DC=com
+targetPwd = Diamond1!
+
+targetAssocValueAttr = objectGUID
+targetMatchAttr = employeeNumber
+targetSearchBase = CN=Users,DC=iglab,DC=com
+targetSearchFilter = objectClass=person
