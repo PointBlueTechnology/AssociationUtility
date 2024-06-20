@@ -77,6 +77,7 @@ public class ProcessEdir extends CommonImpl {
                     if (matchValues.contains(matchValue))
                     {
                         System.out.println("   Duplicate match value: " + matchValue + " : " + result.getName());
+                        writeLine(result.getNameInNamespace() + "|Duplicate match value: " + matchValue);
                         continue; //move on to next user
                     }
                     matchValues.add(matchValue);
@@ -85,6 +86,7 @@ public class ProcessEdir extends CommonImpl {
                     NamingEnumeration matchedIdvUsers = idvCtx.search(idvSearchBase, "(" + idvMatchAttr + "=" + matchValue + ")", sControls);
 
                     //System.out.println("   Found Matching IDV Users: "+ matchedIdvUsers.hasMore());
+                    boolean noMateches = true;
                     while (matchedIdvUsers.hasMore())
                     {
                         SearchResult idvUser = (SearchResult) matchedIdvUsers.next();
@@ -92,6 +94,8 @@ public class ProcessEdir extends CommonImpl {
                         if (matchedIdvUsers.hasMoreElements())
                         {
                             System.out.println("   Multiple Matching IDV Users: " + matchValue);
+                            writeLine(result.getNameInNamespace() + "|Multiple Matches found " + matchValue);
+                            noMateches = false;
                             break;
                         }
                         System.out.println("Found Matching IDV User: " + idvUser.getName());
@@ -101,6 +105,8 @@ public class ProcessEdir extends CommonImpl {
                         if (currentAssociations != null && currentAssociations.contains(associationValue))
                         {
                             System.out.println("   Association already exists: " + associationValue);
+                            writeLine(idvUser.getNameInNamespace() + "|" + "Association already exists|" + associationValue);
+                            noMateches = false;
                             continue;
                         }
                         if (currentAssociations != null)
@@ -113,12 +119,14 @@ public class ProcessEdir extends CommonImpl {
                                 if (value.toUpperCase().startsWith(driverDN.toUpperCase()))
                                 {
                                     System.out.println("   Conflicting Association: " + value);
+                                    writeLine(idvUser.getNameInNamespace() + "|" + "Conflicting Association|" + value);
                                     hasConflictingAssociation = true;
                                     continue;
                                 }
                             }
                             if (hasConflictingAssociation)
                             {
+                                noMateches = false;
                                 continue;
                             }
                         }
@@ -127,18 +135,27 @@ public class ProcessEdir extends CommonImpl {
                         if (reportOnly)
                         {
                             System.out.println("   Would Add Association: " + associationValue);
+                            writeLine(result.getNameInNamespace() + "|" + "Would Add Association|" + associationValue + "|" + idvUser.getNameInNamespace());
                         } else
                         {
                             System.out.println("   Adding Association: " + associationValue);
+                            writeLine(result.getNameInNamespace() + "|" + "Added Association|" + associationValue + "|" + idvUser.getNameInNamespace());
                             BasicAttribute associationAttr = new BasicAttribute("DirXML-Associations", associationValue);
                             ModificationItem[] mods = new ModificationItem[]{new ModificationItem(DirContext.ADD_ATTRIBUTE, associationAttr)};
                             idvCtx.modifyAttributes(idvUser.getName(), mods);
                         }
 
                     }
+                    if (noMateches)
+                    {
+                        writeLine(result.getNameInNamespace() + "|No Match found " + matchValue);
+                    }
+                } else
+                {
+                    System.out.println("   No match attribute found for: " + result.getNameInNamespace());
+                    writeLine(result.getNameInNamespace() + "|No match attribute found");
                 }
             }
-
 
         } catch (Exception e)
         {
