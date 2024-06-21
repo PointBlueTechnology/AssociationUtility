@@ -154,7 +154,7 @@ public class ProcessAD extends CommonImpl {
                 } else
                 {
                     System.out.println("   No match attribute found for: " + result.getNameInNamespace());
-                    writeLine(result.getNameInNamespace() + "|No match attribute found");
+                    writeLine(result.getNameInNamespace() + "|No match attribute");
                 }
             }
 
