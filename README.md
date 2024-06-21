@@ -1,14 +1,14 @@
 # IDM Association Utility
 
 This utility is used to analyze matches between an NetIQ (Opentext) identity Manager Identity Vault (IDV) and a target system. It currently supports
-eDirectory and Active Directory as target systems. The current code only support single attribute mapping but can 
+eDirectory and Active Directory as target systems. The current code only supports single attribute mapping but can 
 be easily extended. The output is useful for data analysis and cleansing. Enabling the createAssoc option can be used to pre-load the associations in the IDV.
 
 
 The utility will create a pipe delimited
 csv file with the following columns:
 ```
-Taget DN | result | association value | IDV object DN 
+Target DN | result | association value | IDV object DN 
 ```
 The possible results are:
 
